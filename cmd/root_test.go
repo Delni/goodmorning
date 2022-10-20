@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func RunRootOnBuffer() (*cobra.Command, *bytes.Buffer){
+func RunRootOnBuffer() (*cobra.Command, *bytes.Buffer) {
 	command := NewRootCmd()
 	buffer := bytes.NewBufferString("")
 	command.SetOut(buffer)
