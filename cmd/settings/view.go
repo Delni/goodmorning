@@ -12,11 +12,12 @@ import (
 type model struct {
 	tabs      []string
 	activeTab int
-	height int
+	height    int
+	width     int
 }
 
 func Program() error {
-	tabs := []string{"Menu", "Apps", "Credits"}
+	tabs := []string{"Credits"}
 	m := model{
 		tabs: tabs,
 	}
@@ -47,6 +48,7 @@ func (m model) Update(message tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := message.(type) {
 	case tea.WindowSizeMsg:
 		m.height = msg.Height
+		m.width = msg.Width
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msg, utils.Keys.Left):
@@ -63,7 +65,7 @@ func (m model) Update(message tea.Msg) (tea.Model, tea.Cmd) {
 	}
 
 	if m.activeTab < 0 {
-		m.activeTab = len(m.tabs) -1
+		m.activeTab = len(m.tabs) - 1
 	}
 
 	return m, nil
@@ -88,14 +90,16 @@ func (m model) View() string {
 	row := lipgloss.JoinHorizontal(lipgloss.Top, renderedTabs...)
 	doc.WriteString(row)
 
-	var content string;
+	var content string
 	switch m.tabs[m.activeTab] {
-	case "Apps":
-		content = "Apps"
 	case "Credits":
 		content = Credits()
 	}
 	doc.WriteString(windowStyle.Render(content))
-	
+	height := m.height - strings.Count(doc.String(), "\n") - 1
+	if height > 0 {
+		doc.WriteString(strings.Repeat("\n", height))
+	}
+	doc.WriteString(Footer(m.width))
 	return docStyle.Render(doc.String())
 }
