@@ -7,20 +7,26 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var rootCmd = &cobra.Command{
-	Use:   "goodmorning",
-	Short: "Goodmorning helps you automate you morning routine",
-	Long: `A Fast and Flexible morning routine automater built with BubbleTea from Charm.`,
-	Run: func(cmd *cobra.Command, args []string) {
-	  fmt.Println("Goodmorning")
-	},
-  }
-  
-  func Execute() {
-	rootCmd.AddCommand(settingsCmd)
-	if err := rootCmd.Execute(); err != nil {
-	  fmt.Println(err)
-	  os.Exit(1)
+func NewRootCmd() (*cobra.Command) {
+	cmd :=&cobra.Command{
+		Use:   "goodmorning",
+		Short: "Goodmorning helps you automate you morning routine",
+		Long:  `A Fast and Flexible morning routine automater built with BubbleTea from Charm.`,
+		Args: cobra.NoArgs,
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Fprintln(cmd.OutOrStdout(),"Goodmorning")
+		},
 	}
-  }
-  
+	
+	cmd.AddCommand(NewSettingsCmd())
+	return cmd
+}
+
+func Execute() {
+	rootCmd := NewRootCmd()
+	
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Fprintln(rootCmd.OutOrStderr(), err)
+		os.Exit(1)
+	}
+}
