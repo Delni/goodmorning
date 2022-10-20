@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"fmt"
+	"goodmorning/cmd/settings"
 
 	"github.com/spf13/cobra"
 )
@@ -11,8 +11,7 @@ func NewSettingsCmd() *cobra.Command {
 		Use:   "settings",
 		Short: "Manage your routine",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			fmt.Println("settings")
-			return nil
+			return settings.Program()
 		},
 	}
 }
