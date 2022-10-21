@@ -1,4 +1,4 @@
-package settings
+package pages
 
 import "github.com/charmbracelet/lipgloss"
 
@@ -14,5 +14,4 @@ Coded with ` + loveStyle.Render("♥️") + ` in Golang.
 
 Copyright (c) 2022 Nicolas Delauney
 More info on ` + urlStyle.Render("https://github.com/delni/goodmorning") + "."
-
 }

@@ -1,6 +1,8 @@
 package settings
 
 import (
+	"goodmorning/cmd/settings/components"
+	"goodmorning/cmd/settings/pages"
 	"goodmorning/cmd/utils"
 	"strings"
 
@@ -26,18 +28,8 @@ func Program() error {
 }
 
 var (
-	activeTabBorder      = lipgloss.RoundedBorder()
-	docStyle             = lipgloss.NewStyle()
-	inactiveColor        = lipgloss.AdaptiveColor{Light: "#fff", Dark: "#000"}
-	activeColor          = lipgloss.AdaptiveColor{Light: "#000", Dark: "#fff"}
-	highlightBorderColor = lipgloss.AdaptiveColor{Light: "#874BFD", Dark: "#7D56F4"}
-	inactiveTabStyle     = lipgloss.NewStyle().
-				Foreground(inactiveColor).
-				Border(lipgloss.HiddenBorder()).
-				BorderForeground(highlightBorderColor).
-				Padding(0, 1)
-	activeTabStyle = inactiveTabStyle.Copy().Border(activeTabBorder, true).Foreground(activeColor)
-	windowStyle    = lipgloss.NewStyle().Padding(1, 0)
+	docStyle    = lipgloss.NewStyle()
+	windowStyle = lipgloss.NewStyle().Padding(1, 0)
 )
 
 func (m model) Init() tea.Cmd {
@@ -74,32 +66,20 @@ func (m model) Update(message tea.Msg) (tea.Model, tea.Cmd) {
 func (m model) View() string {
 	doc := strings.Builder{}
 
-	var renderedTabs []string
-
-	for i, t := range m.tabs {
-		var style lipgloss.Style
-		_, _, isActive := i == 0, i == len(m.tabs)-1, i == m.activeTab
-		if isActive {
-			style = activeTabStyle.Copy()
-		} else {
-			style = inactiveTabStyle.Copy()
-		}
-		renderedTabs = append(renderedTabs, style.Render(t))
-	}
-
-	row := lipgloss.JoinHorizontal(lipgloss.Top, renderedTabs...)
-	doc.WriteString(row)
+	doc.WriteString(components.RenderTabs(m.tabs, m.activeTab))
 
 	var content string
 	switch m.tabs[m.activeTab] {
 	case "Credits":
-		content = Credits()
+		content = pages.Credits()
 	}
+
 	doc.WriteString(windowStyle.Render(content))
+
 	height := m.height - strings.Count(doc.String(), "\n") - 1
 	if height > 0 {
 		doc.WriteString(strings.Repeat("\n", height))
 	}
-	doc.WriteString(Footer(m.width))
+	doc.WriteString(components.Footer(m.width))
 	return docStyle.Render(doc.String())
 }
