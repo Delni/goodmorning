@@ -52,6 +52,10 @@ func (m model) Update(message tea.Msg) (tea.Model, tea.Cmd) {
 		}
 	}
 
+	return m.SetActiveTabInBounds(), nil
+}
+
+func (m model) SetActiveTabInBounds() model {
 	if m.activeTab >= len(m.tabs) {
 		m.activeTab = 0
 	}
@@ -59,8 +63,7 @@ func (m model) Update(message tea.Msg) (tea.Model, tea.Cmd) {
 	if m.activeTab < 0 {
 		m.activeTab = len(m.tabs) - 1
 	}
-
-	return m, nil
+	return m
 }
 
 func (m model) View() string {
