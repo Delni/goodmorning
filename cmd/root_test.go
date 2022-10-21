@@ -19,10 +19,3 @@ func TestRootCmd(t *testing.T) {
 	err := command.Execute()
 	assert.Nil(t, err)
 }
-
-func TestRootCmdShouldHaveSettingsFlag(t *testing.T) {
-	command, _ := RunRootOnBuffer()
-	command.SetArgs([]string{"settings"})
-	err := command.Execute()
-	assert.Nil(t, err, err)
-}
