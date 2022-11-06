@@ -18,8 +18,9 @@ type model struct {
 	width     int
 }
 
+var tabs = []string{"Apps", "Credits"}
+
 func Program() error {
-	tabs := []string{"Credits"}
 	m := model{
 		tabs: tabs,
 	}
@@ -73,6 +74,8 @@ func (m model) View() string {
 
 	var content string
 	switch m.tabs[m.activeTab] {
+	case "Apps":
+		content = pages.Apps()
 	case "Credits":
 		content = pages.Credits()
 	}

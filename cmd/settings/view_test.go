@@ -80,10 +80,18 @@ func TestView(t *testing.T) {
 	assert.Contains(t, view, components.Footer(10))
 }
 
-func TestViewShoulDisplayCreditsWhenTabIsCredit(t *testing.T) {
+func TestViewShoudlDisplayCreditsWhenTabIsCredit(t *testing.T) {
 	view := model{tabs: []string{"Credits"}}.View()
 	assert.Contains(t,
 		strings.ReplaceAll(view, " ", ""),
 		strings.ReplaceAll(pages.Credits(), " ", ""),
+	)
+}
+
+func TestViewShouldDisplayAppsWhenTabIsApp(t *testing.T) {
+	view := model{tabs: []string{"Apps"}}.View()
+	assert.Contains(t,
+		strings.ReplaceAll(view, " ", ""),
+		strings.ReplaceAll(pages.Apps(), " ", ""),
 	)
 }
