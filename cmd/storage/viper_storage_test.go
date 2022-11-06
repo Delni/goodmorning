@@ -7,9 +7,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var vSM = ViperStorageManager{}
+
 func TestSaveApp(t *testing.T) {
 	viper.AddConfigPath(".")
-	SaveApp(App{
+	vSM.saveApp(App{
 		label:   "Test",
 		command: "test",
 		active:  true,
@@ -23,13 +25,13 @@ func TestSaveApp(t *testing.T) {
 
 func TestParseApps(t *testing.T) {
 	viper.AddConfigPath(".")
-	SaveApp(App{
+	vSM.saveApp(App{
 		label:   "Test",
 		command: "test",
 		active:  true,
 	})
 
-	apps := ParseApps()
+	apps := vSM.getApps()
 
 	assert.Len(t, apps, 1)
 	testApp := apps[0]
